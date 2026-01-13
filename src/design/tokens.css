@@ -1,0 +1,43 @@
+:root {
+  /* Color palette */
+  --hue-primary: 20; 
+  --hue-secondary: 280;
+  --hue-accent: 160;
+  --hue-background: 0;
+  --hue-text: 250;
+
+  /* Semantic mappings */
+  --color-bg: oklch(0.07 0 var(--hue-background));
+  --color-text: oklch(0.65 0.01 var(--hue-text));
+  --color-primary: oklch(0.65 0.15 var(--hue-primary));
+  --color-secondary: oklch(0.65 0.10 var(--hue-secondary));
+  --color-accent: oklch(0.75 0.20 var(--hue-accent));
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --color-bg: oklch(1 0 0);
+    --color-text: oklch(0.34 0 var(--hue-text));
+
+    /* Keep chroma/hue, adjust lightness */
+    --color-primary: oklch(0.6 0.15 20);
+    --color-secondary: oklch(0.6 0.1 240);
+    --color-accent: oklch(0.7 0.20 160);
+  }
+}
+
+
+
+ /*
+export const Colors = {
+  main: '#f87171', // red-400
+  secondary: '#1f2937', // gray-800
+  text: '#9ca3af',
+  violet: '#1e1b4b',
+  indigo: '#1e1b4b',
+  cian:   '#083344',
+  sky:  '#082f49',
+  gray: '#030712',
+  slate: '#020617',
+};
+ */
