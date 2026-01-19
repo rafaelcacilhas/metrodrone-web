@@ -10,7 +10,7 @@ Audio-first reactive application. The audio engine is the source of truth; the U
 
 Three-layer model:
 
-1. **Audio Engine** (vanilla JS) – Imperative, real-time
+1. **Audio Engine** (Typescript) – Imperative, real-time
 2. **Store Bridge** (Svelte stores) – Reactive translation layer  
 3. **UI Components** (Svelte) – Declarative controls
 
@@ -57,5 +57,6 @@ interface AudioEngine {
   
   // Metronome control
   setTempo(bpm: number): void
+  setBeatNumber(beats: number): void
   setMetronomeVolume(gain: number): void
 }

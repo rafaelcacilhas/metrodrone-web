@@ -1,8 +1,53 @@
 import { writable } from 'svelte/store';
+import AudioEngine from '../audio/engine';
 
-export const droneFrequency = writable(55.0)
-export const filterCutoff = writable(800.0)
-export const isPlaying = writable(false)
+const initialDroneFrequency = 220.0;
+const initialVolume = 5;
+const initialWaveType = 'sine';
+
+const initialNumberOfBeats = 4;
+const initialTempo = 100;
+
+export const audioEngine = new AudioEngine({
+	volume: initialVolume,
+	droneFrequency: initialDroneFrequency,
+	waveType: initialWaveType,
+	numberOfBeats: initialNumberOfBeats,
+	tempo: initialTempo,
+});
+
+export const droneFrequency = writable(initialDroneFrequency);
+droneFrequency.subscribe((freq : number) =>{
+	audioEngine.setDroneFrequency(freq)
+})
+
+export const selectedNote = writable('A')
+
+export const isDronePlaying = writable(false);
+isDronePlaying.subscribe((shouldPlay) => {
+	if(shouldPlay) audioEngine.playDrone();
+	else audioEngine.stopDrone();
+})
+
+export const metronomeTempo = writable(initialTempo);
+metronomeTempo.subscribe((tempo : number) =>{
+	audioEngine.setTempo(tempo)
+})
+export const isMetronomePlaying = writable(false);
+isMetronomePlaying.subscribe((shouldPlay) => {
+	if(shouldPlay) audioEngine.playMetronome();
+	else audioEngine.stopMetronome();
+})
+
+export const numberOfBeats = writable(initialNumberOfBeats);
+numberOfBeats.subscribe((number: number) => {
+	audioEngine.setNumberOfBeats(number);
+})
+
+export const tempo = writable(initialTempo);
+tempo.subscribe((newTempo: number) => {
+	audioEngine.setTempo(newTempo);
+})
 
 /*
 set -> one argument which is the value to be set. 
