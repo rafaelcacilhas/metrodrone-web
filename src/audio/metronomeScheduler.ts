@@ -1,3 +1,5 @@
+import {currentBeat, numberOfBeats} from '../stores/audio'
+
 export type MetronomeSchedulerProps = { 
     audioContext: AudioContext;
     numberOfBeats: number;
@@ -37,6 +39,11 @@ export default class MetronomeScheduler{
             if (now >= this.nextBeatTime ) { 
                 this.singleBeep(this.nextBeatTime);
                 this.nextBeatTime += this.beatDuration;
+                
+                currentBeat.update((lastValue) => {
+                    if(lastValue == this.numberOfBeats) return 1;
+                    else return lastValue + 1
+                })
             }
 
             const timeUntilNext = this.nextBeatTime - now;
@@ -55,6 +62,7 @@ export default class MetronomeScheduler{
         this.oscillator.stop(startTime + this.noteDuration);
 
         this.oscillator = null;
+
     }
 
     stop: ( ) => void = () =>{
@@ -69,6 +77,10 @@ export default class MetronomeScheduler{
 
     setTempo: (tempo: number) => void = (tempo) => {
         this.tempo = tempo;    
+    }
+
+    setCurrentBeat: (number: number) => void = (number) =>{
+        
     }
 
 }

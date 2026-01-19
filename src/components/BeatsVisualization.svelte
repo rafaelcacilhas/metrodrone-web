@@ -1,36 +1,33 @@
 <script>
-// @ts-nocheck
-
-  import {numberOfBeats } from '../stores/audio';
+  import {numberOfBeats, currentBeat } from '../stores/audio';
   
-  const beats = []
-  const activeBeat = 1;
-
-  for(let i = 0; i < $numberOfBeats; i++){
-    beats.push(i);
-  }
+  const currentBeatLocal = $derived($currentBeat)
+  let beats = $derived.by(() =>{
+    const output = []
+    for(let i = 0; i < $numberOfBeats; i++){
+            output.push(i);
+    }   
+    return output
+  });
 
 </script>
 
 <div class="beatContainer">
     <div class="beatGraphics">
         {#each beats as beat, index}
-            <div class={index + 1 == activeBeat? 'activeBeat':'beat'} > </div>
+            <div class={index + 1 == currentBeatLocal? 'activeBeat':'beat'} > </div>
         {/each}
     </div>
 
     <div class="beatButtons">
-        <button 
-            onclick={ ()=>{numberOfBeats.set(numberOfBeats-1)}}
+        <button  class="beatButton"
+            onclick={ ()=>{numberOfBeats.set($numberOfBeats-1)}}
         > - </button>
-        <button 
-            onclick={()=>{numberOfBeats.set(numberOfBeats+1)}}
+        <button class="beatButton"
+            onclick={()=>{numberOfBeats.set($numberOfBeats+1)}}
         > + </button>
     </div>
 </div>
-
-
-
 
 <style>
     .beatContainer{
@@ -59,5 +56,16 @@
         height: 3rem;
         width: 1rem;
         background-color: var(--color-secondary);
+    }
+    .beatButtons{
+        display: flex;
+        gap: 0.5rem;
+    }
+    .beatButton{
+        width: 2.5rem;
+        height:1.4rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 </style>

@@ -41,8 +41,11 @@ isMetronomePlaying.subscribe((shouldPlay) => {
 
 export const numberOfBeats = writable(initialNumberOfBeats);
 numberOfBeats.subscribe((number: number) => {
+	console.log("numberOfBeats", number)
 	audioEngine.setNumberOfBeats(number);
 })
+
+export const currentBeat = writable(1);
 
 export const tempo = writable(initialTempo);
 tempo.subscribe((newTempo: number) => {
