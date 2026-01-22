@@ -15,7 +15,7 @@ Three-layer model:
 3. **UI Components** (Svelte) – Declarative controls
 
 ## Architecture
-
+```
 src/
 ├── audio/           # Audio engine modules
 │   ├── Engine.ts
@@ -36,6 +36,7 @@ src/
 ├── utils/
 ├── App.svelte
 └── main.ts
+```
 
 ## Interface Contracts
 
