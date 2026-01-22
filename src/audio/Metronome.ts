@@ -1,4 +1,4 @@
-import {currentBeat, numberOfBeats} from '../stores/audio'
+import {currentBeat} from '../stores/audio'
 
 export type MetronomeSchedulerProps = { 
     audioContext: AudioContext;
@@ -6,7 +6,7 @@ export type MetronomeSchedulerProps = {
     tempo: number,
 }
 
-export default class MetronomeScheduler{
+export default class Metronome{
     public audioContext: AudioContext;
     public numberOfBeats: number;
     public tempo: number;
@@ -50,7 +50,6 @@ export default class MetronomeScheduler{
             this.timeoutId = setTimeout(scheduleNext, timeUntilNext * 1000 );
         };
 
-        this.nextBeatTime = this.audioContext.currentTime;
         scheduleNext();
     };
 
@@ -77,10 +76,6 @@ export default class MetronomeScheduler{
 
     setTempo: (tempo: number) => void = (tempo) => {
         this.tempo = tempo;    
-    }
-
-    setCurrentBeat: (number: number) => void = (number) =>{
-        
     }
 
 }

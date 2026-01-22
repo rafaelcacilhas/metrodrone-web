@@ -1,7 +1,8 @@
-import DroneInstrument from "./droneInstrument";
-import type { DroneInstrumentProps } from "./droneInstrument";
-import MetronomeScheduler from "./metronomeScheduler";
-import type {MetronomeSchedulerProps} from './metronomeScheduler';
+import Drone from "./Drone";
+import type { DroneInstrumentProps } from "./Drone";
+
+import Metronome from "./Metronome";
+import type {MetronomeSchedulerProps} from './Metronome';
 
 type AudioEngineConfig = {   
     volume: number;
@@ -12,43 +13,38 @@ type AudioEngineConfig = {
 }
 
 export default class AudioEngine {
-    public volume:number;
-    public droneFrequency:number;
-    public waveType:OscillatorType;
-
     private context:AudioContext;
-    private drone : DroneInstrument | null;
+    
+    private drone : Drone | null;
     private isDroneActive: boolean = false;
     private droneProperties: DroneInstrumentProps;
     
-    private metronome: MetronomeScheduler | null;
+    private metronome: Metronome | null;
     private isMetronomeActive: boolean = false;
     private metronomeProperties: MetronomeSchedulerProps;
 
     constructor(config: AudioEngineConfig) {
         this.context = new AudioContext;
-        this.volume = config.volume;
-        this.droneFrequency = config.droneFrequency;
-        this.waveType = config.waveType;
 
         this.droneProperties = {
             audioContext: this.context,
+            volume: config.volume,
             waveType: config.waveType,
+            frequency: config.droneFrequency
         }
-        this.drone = new DroneInstrument(this.droneProperties);
+        this.drone = new Drone(this.droneProperties);
 
         this.metronomeProperties = {
             audioContext: this.context,
             numberOfBeats: config.numberOfBeats,
             tempo: config.tempo,
         }
-        this.metronome = new MetronomeScheduler(this.metronomeProperties);
+        this.metronome = new Metronome(this.metronomeProperties);
     }
 
     playDrone: () => void = () =>{
         if(this.isDroneActive) return;
-        this.drone = new DroneInstrument(this.droneProperties);
-        this.drone.setDroneFrequency(this.droneFrequency);
+        this.drone = new Drone(this.droneProperties);
         this.drone.play();
         this.isDroneActive = true;
     };
@@ -61,7 +57,7 @@ export default class AudioEngine {
     }
 
     setDroneFrequency: (frequency: number) => void = (frequency) =>{
-        this.droneFrequency = frequency;
+        this.droneProperties.frequency = frequency;
         if(this.isDroneActive) {
             this.stopDrone();
             this.playDrone();
@@ -70,7 +66,7 @@ export default class AudioEngine {
 
     playMetronome: () => void = () =>{
         if(this.isMetronomeActive) return;
-        this.metronome = new MetronomeScheduler(this.metronomeProperties);
+        this.metronome = new Metronome(this.metronomeProperties);
         this.metronome.setShouldPlay(true);
         this.metronome.play();
         this.isMetronomeActive = true;

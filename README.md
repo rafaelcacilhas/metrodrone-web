@@ -1,6 +1,6 @@
 # Metrodrone
 
-This is a web app made of a metronome and a drone player. It consists of a typescript engine that will synthesize sounds and a Svelte frontend to control it.
+This is a web app made of a metronome and a drone player. It consists of a typescript engine that will synthesize sounds and a Svelte frontend to control it. We also use [shadcn-svelte](https://www.shadcn-svelte.com) for some UI components.
 
 ## Core Philosophy
 
@@ -17,15 +17,15 @@ Three-layer model:
 ## Architecture
 
 src/
-├── audio/           # Audio engine modules (vanilla JS/TS)
-│   ├── engine.ts    # Main audio context and graph management
-│   ├── drone.ts     # Drone oscillator and modulation
-│   ├── metronome.ts # Metronome scheduler and click generator
-│   ├── filters/     # Filter implementations
-│   │   ├── biquad.ts
-│   │   ├── ladder.ts
-│   │   └── manager.ts
-│   └── effects/     # Reverb, delay, etc.
+├── audio/           # Audio engine modules
+│   ├── Engine.ts
+│   ├── Drone.ts
+│   ├── Metronome.ts
+│   ├── fx/
+│   │   ├── FXChain.ts
+│   │   ├── LowPass.ts
+│   │   └── Reverb.ts
+│   └── sounds/      # Cello, Drums, Horns
 ├── components/      # Svelte UI components
 │   ├── DroneControl.svelte
 │   ├── MetronomeControl.svelte
@@ -33,7 +33,7 @@ src/
 │   └── ...
 ├── stores/          # Svelte stores for app state
 │   └── audio.ts     # Reactive bridge to audio engine
-├── utils/           # Shared utilities
+├── utils/
 ├── App.svelte
 └── main.ts
 

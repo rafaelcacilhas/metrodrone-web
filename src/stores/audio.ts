@@ -1,9 +1,9 @@
 import { writable } from 'svelte/store';
-import AudioEngine from '../audio/engine';
+import AudioEngine from '../audio/Engine';
 
 const initialDroneFrequency = 220.0;
-const initialVolume = 5;
-const initialWaveType = 'sine';
+const initialVolume = 0.05;
+const initialWaveType = 'sawtooth';
 
 const initialNumberOfBeats = 4;
 const initialTempo = 100;
@@ -16,12 +16,14 @@ export const audioEngine = new AudioEngine({
 	tempo: initialTempo,
 });
 
-export const droneFrequency = writable(initialDroneFrequency);
+export const octaveFactor = 1; // TODO: implement octave swapping
+
+export const droneFrequency = writable(initialDroneFrequency/octaveFactor);
 droneFrequency.subscribe((freq : number) =>{
-	audioEngine.setDroneFrequency(freq)
+	audioEngine.setDroneFrequency(freq/octaveFactor)
 })
 
-export const selectedNote = writable('A')
+export const selectedNote = writable('A');
 
 export const isDronePlaying = writable(false);
 isDronePlaying.subscribe((shouldPlay) => {
@@ -41,7 +43,6 @@ isMetronomePlaying.subscribe((shouldPlay) => {
 
 export const numberOfBeats = writable(initialNumberOfBeats);
 numberOfBeats.subscribe((number: number) => {
-	console.log("numberOfBeats", number)
 	audioEngine.setNumberOfBeats(number);
 })
 
