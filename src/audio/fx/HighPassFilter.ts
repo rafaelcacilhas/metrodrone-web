@@ -1,5 +1,5 @@
 
-export class LowPassFilter {
+export class HighPassFilter {
     private audioContext:AudioContext;
     public frequency: number;
     public q:number;
@@ -11,18 +11,13 @@ export class LowPassFilter {
         this.q = q;
 
         this.node = this.audioContext.createBiquadFilter();
-        this.node.type = 'lowpass';
+        this.node.type = 'highpass';
         this.node.frequency.value = this.frequency;
         this.node.Q.value = this.q;
-        
     }
 
     connect(destination: GainNode){
         this.node.connect(destination);
-    }
-
-    dispose(){
-        this.node.disconnect();
     }
 
     setFrequency(number:number){

@@ -1,7 +1,7 @@
 <script lang="ts">
-  import {selectedNote, droneFrequency, isDronePlaying, octaveFactor} from '../stores/audio';
+  import {selectedNote, droneFrequency, isDroneActive, octaveFactor, updateDroneFrequency} from '../stores/audio';
 
-  const AFrequency = 440.0;
+  const   AFrequency = 440.0;
   // TODO: Write all frequencies using A as a reference
 
   const naturals = [
@@ -28,7 +28,7 @@
   <section>
     <h1>Drone</h1>
     <h2> {$selectedNote}</h2>
-    <p class="tag">{$droneFrequency/octaveFactor} Hz </p>
+    <p class="tag">{$droneFrequency/$octaveFactor} Hz </p>
 
     <div class="keyboard">
       <div class="accidentals">
@@ -37,7 +37,7 @@
             <button
               class="key"
               onclick={()=> {
-                droneFrequency.set(note.freq)
+                updateDroneFrequency(note.freq)
                 selectedNote.set(note.name)
               }}
             >
@@ -53,7 +53,7 @@
           <button
             class="key"
             onclick={()=> {
-                droneFrequency.set(note.freq)
+                updateDroneFrequency(note.freq)
                 selectedNote.set(note.name)
               }}
             >
@@ -66,8 +66,8 @@
     </div>
 
     <div class="buttonSection">
-      <button onclick={()=> isDronePlaying.set(!$isDronePlaying)}> 
-        {$isDronePlaying? 'pause' : 'play'} 
+      <button onclick={()=> isDroneActive.set(!$isDroneActive)}> 
+        {$isDroneActive? 'pause' : 'play'} 
       </button>
 
       <button disabled> 

@@ -14,8 +14,8 @@ export class EnvelopeFilter{
     private sustain: number = 0.5;
     private release: number = 0.2;
 
-    // private attackTime: number;
-    // private releaseTime: number;
+    private releaseTime: number = 0;
+    private isActive: boolean = false;
 
     constructor(audioContext:AudioContext, envelopeParameters: EnvelopeParameters){
         this.audioContext = audioContext;
@@ -25,6 +25,7 @@ export class EnvelopeFilter{
         this.sustain = envelopeParameters.sustain;
 
         this.node = this.audioContext.createGain();
+        this.node.gain.value = 0.5;
     }
 
     start(time?:number){
@@ -35,22 +36,41 @@ export class EnvelopeFilter{
 
     }
 
-    setAttack(t: number){
+    dispose(){
+        this.node.disconnect();
+    }
 
+    setAttack(attack: number){
+        this.attack = Math.max(0.001, attack);
     };
-    setDecay(t: number){
-        
+    setDecay(decay: number){
+        this.decay =  Math.max(0.001, decay);
     };
-    setSustain(l: number){
-        
+    setSustain(sustain: number){
+        this.sustain =  Math.max(0.001, sustain);
     };
-    setRelease(t: number){
-        
+    setRelease(release: number){
+        this.release =  Math.max(0.001, release);
     };
+
     triggerAttack(time: number){
-        
+        this.isActive = true;
+        const t = time;
+        this.node.gain.cancelScheduledValues(t);
+
+        this.node.gain.setValueAtTime(0.001,t);
+        this.node.gain.exponentialRampToValueAtTime(1, t+this.attack);
+
+        this.node.gain.setTargetAtTime(this.sustain, t + this.attack,this.decay);
     };
+
     triggerRelease(time: number){
-        
+        if(!this.isActive) return;
+        this.isActive = false;
+        this.releaseTime = time;
+
+        this.node.gain.cancelScheduledValues(time);
+        this.node.gain.setValueAtTime(this.node.gain.value, time);
+        this.node.gain.setTargetAtTime(0.001, time, this.release);
     };
 }

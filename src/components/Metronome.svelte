@@ -1,33 +1,33 @@
 
 <script lang="ts">
-  import { tempo, metronomeTempo, isMetronomePlaying } from '../stores/audio';
+  import { tempo,updateTempo, isMetronomeActive, audioEngine } from '../stores/audio';
   import BeatsVisualization from './BeatsVisualization.svelte';
   import { Slider } from "$lib/components/ui/slider/index.js";
   
-  let sliderValue = $metronomeTempo;
+  let sliderValue = $tempo;
   function handleChange(newValue:number) {
-    metronomeTempo.set(newValue);
+    tempo.set(newValue);
+    updateTempo($tempo)
   }
 
   const AFrequency = 440.0;
   // TODO: Write all frequencies using A as a reference
 
-
 </script>
 
   <section>
     <h1>Metronome</h1>
-    <h2>{$metronomeTempo}</h2>
+    <h2>{$tempo}</h2>
     <p class="tag"> BPM </p>
     <Slider 
       onValueCommit={handleChange}
       type="single" bind:value={sliderValue} max={250} step={1} 
       class="max-w-[50%] bg-violet-400" 
-    />
+    />  
 
     <BeatsVisualization />
-    <button onclick={()=> isMetronomePlaying.set(!$isMetronomePlaying)}> 
-      {$isMetronomePlaying? 'pause' : 'play'} 
+    <button onclick={()=> isMetronomeActive.set(!$isMetronomeActive)}> 
+      {$isMetronomeActive? 'pause' : 'play'} 
     </button>
 
   </section>

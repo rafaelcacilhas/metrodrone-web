@@ -1,10 +1,9 @@
 import { EnvelopeFilter, type EnvelopeParameters } from '../fx/EnvelopeFilter';
-import {FXChain} from '../fx/FXChain'
+import type { Instrument } from 'src/audio/instruments/Instrument';
 import { LowPassFilter } from '../fx/LowPassFilter';
-import { DetunedVoiceBank } from '../voice/DetunedVoiceBank';
+import { DetunedVoiceBank } from '../synth/DetunedVoiceBank';
 
-// Complex instrument: DetunedVoiceBank and FX chain
-export class StringEnsemble {
+export class StringEnsemble implements Instrument {
   private voices: DetunedVoiceBank = [] as unknown as DetunedVoiceBank;
 
   private filter: LowPassFilter;
@@ -37,6 +36,7 @@ export class StringEnsemble {
     this.voices.node.connect(this.filter.node);
     this.filter.node.connect(this.envelope.node);
     this.envelope.node.connect(this.output);
+
   }
 
   start(time?:number) {
@@ -49,6 +49,14 @@ export class StringEnsemble {
     const stopTime = time || this.audioContext.currentTime;
     this.envelope.setRelease(stopTime);
     this.voices.stop(stopTime) ;
+  }
+
+  dispose(){
+    this.voices.dispose();
+    this.voices =  [] as unknown as DetunedVoiceBank;
+
+    this.filter.dispose()
+    this.envelope.stop()
   }
 
   connect(destination:AudioNode){

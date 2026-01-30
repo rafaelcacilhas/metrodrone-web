@@ -1,30 +1,82 @@
-<script>
-  import {numberOfBeats, currentBeat } from '../stores/audio';
-  
-  const currentBeatLocal = $derived($currentBeat)
-  let beats = $derived.by(() =>{
-    const output = []
-    for(let i = 0; i < $numberOfBeats; i++){
-            output.push(i);
+<script lang="ts">
+    import {currentBeat, audioEngine, beats } from '../stores/audio';
+    import { BeatSounds } from '../audio/engines/MetronomeEngine';
+
+    const handleClick = (beat: number) =>{  
+    let newSound;
+    console.log('beat', beat, $beats[beat].sound)
+    switch($beats[beat].sound) {
+        case BeatSounds.Kick:
+            newSound = BeatSounds.Snare;
+            break;
+        case BeatSounds.Snare:
+            newSound = BeatSounds.HiHat;
+            break;
+        case BeatSounds.HiHat:
+            newSound = BeatSounds.None;
+            break;
+        case BeatSounds.None:
+            newSound = BeatSounds.Kick;
+            break;
+        default:
+            newSound = BeatSounds.None;
+            break;
     }   
-    return output
-  });
+
+    audioEngine.setBeatSound(beat,newSound)     
+    beats.set(audioEngine.getBeatSound())
+    console.log('engine, beats  ')
+    }     
+
+    const getBeatIcon = (beat:number)=> {
+    switch ( $beats[beat].sound){
+        case BeatSounds.Kick:
+            return '◼ ';
+        case BeatSounds.HiHat:
+            return  '▲';
+        case BeatSounds.Snare:
+            return '●';
+        case BeatSounds.None: 
+            return '✖'; 
+    }
+    }
+
+    const addBeat = () => {
+        const updatedBeats = $beats
+        updatedBeats.push({sound: BeatSounds.HiHat})
+        beats.set(updatedBeats)
+    }
+
+    const removeBeat = () => {
+        const updatedBeats = $beats
+        updatedBeats.pop()
+        beats.set(updatedBeats)
+    }
 
 </script>
 
 <div class="beatContainer">
     <div class="beatGraphics">
-        {#each beats as beat, index}
-            <div class={index + 1 == currentBeatLocal? 'activeBeat':'beat'} > </div>
+        {$currentBeat   }
+        {#each $beats as beat,  index}
+            { #if beat != undefined && index > 0 }
+             <button 
+                class={index  == $currentBeat? 'activeBeat':'beat'} 
+                aria-label={'beat'}
+                onclick={()=>handleClick(index)}
+            > 
+                {getBeatIcon(index)}
+            </button>
+            {/if}
         {/each}
     </div>
 
     <div class="beatButtons">
         <button  class="beatButton"
-            onclick={ ()=>{numberOfBeats.set($numberOfBeats-1)}}
+            onclick={ removeBeat }
         > - </button>
         <button class="beatButton"
-            onclick={()=>{numberOfBeats.set($numberOfBeats+1)}}
+            onclick={addBeat}
         > + </button>
     </div>
 </div>
@@ -50,14 +102,27 @@
         height: 3rem;
         width: 1rem;
         background-color: var(--color-text);
+        color: var(--color-bg);
+
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        font-size: smaller;
     }
+
     .activeBeat{
         border-width: 1;
         height: 3rem;
         width: 1rem;
-        background-color: var(--color-secondary);
+        background-color: var(--color-secondary);   
+        color: var(--color-bg);
+        font-size: smaller;
+
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
     }
-    .beatButtons{
+    .beatButtons{       
         display: flex;
         gap: 0.5rem;
     }

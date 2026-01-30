@@ -15,17 +15,24 @@ Three-layer model:
 3. **UI Components** (Svelte) – Declarative controls
 
 ## Architecture
-```
+
+```bash
 src/
 ├── audio/           # Audio engine modules
-│   ├── Engine.ts
-│   ├── Drone.ts
-│   ├── Metronome.ts
+│   ├── engines
+│       ├── BaseEngine.ts
+│       ├── DroneEngine.ts
+│       ├── MetronomeEngine.ts
 │   ├── fx/
 │   │   ├── FXChain.ts
 │   │   ├── LowPass.ts
 │   │   └── Reverb.ts
-│   └── sounds/      # Cello, Drums, Horns
+│   └── instruments/      # Ready to use Instruments
+│   │   ├── Drums.ts
+│   │   ├── Strings.ts
+│   └── synth/           # Base sounds
+│   │   ├── DetunedVoiceBank.ts
+│   │   ├── DrumSynth.ts
 ├── components/      # Svelte UI components
 │   ├── DroneControl.svelte
 │   ├── MetronomeControl.svelte
@@ -34,6 +41,7 @@ src/
 ├── stores/          # Svelte stores for app state
 │   └── audio.ts     # Reactive bridge to audio engine
 ├── utils/
+│   └── audio-context.ts     # Singleton audioContextInstance
 ├── App.svelte
 └── main.ts
 ```
@@ -43,20 +51,24 @@ src/
 ### Audio Engine Public API
 
 ```typescript
-interface AudioEngine {
-  // Lifecycle
-  start(): void
-  stop(): void
-  
+interface BaseEngine {
+
+  type BaseEngineProps = {
+      audioContext: AudioContext;
+      numberOfBeats:number;
+      baseFrequency:number;
+      tempo:number;
+      volume:number;
+  }
+
   // Drone control
-  setDroneFrequency(hz: number): void
-  setDroneWaveform(type: OscillatorType): void
-  
-  // Filter control  
-  setFilterCutoff(hz: number): void
-  setFilterResonance(q: number): void
-  
+  playDrone(): void
+  stopDrone(): void
+  updateDroneFrequency(hz: number): void
+
   // Metronome control
+  playMetronome(): void
+  stopMetronome(): void
   setTempo(bpm: number): void
   setBeatNumber(beats: number): void
   setMetronomeVolume(gain: number): void

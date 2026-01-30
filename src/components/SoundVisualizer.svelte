@@ -11,10 +11,10 @@ let value = 0;
 
 <style>
     .container{
-        border: 1px solid red;
+        border: 1px solid #222;
         position:absolute;
-        bottom: 0;
-        left:35%;
+        bottom: 5%;
+        left:40%;
         width:200px;
         max-height: 200px;
     }

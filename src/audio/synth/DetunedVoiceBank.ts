@@ -25,35 +25,44 @@ export class DetunedVoiceBank {
             const oscillator = this.audioContext.createOscillator();
             oscillator.type = 'sawtooth';
             oscillator.frequency.value = this.baseFrequency + (i-this.voiceCount/2)*frequencyInterval;
-
             voices.push(oscillator)
         }
         return voices;
     }
 
     start(time?:number){
-        if(this.isRunning) return;
+        this.isRunning = true;
+
+        if(!this.voices || this.voices.length === 0) this.voices = this.createDetunedVoices();
         this.voices.forEach((voice) => {
             voice.start(time);
             voice.connect(this.node)
+            console.log("f:",voice.frequency.value)
         })
-        this.isRunning = true;
     }
 
     stop(time?:number) {
-        if(!this.isRunning) return;
-        this.voices.forEach(voice =>{
-             voice.stop(time);
+            this.voices.forEach(voice =>{
+            if(this.isRunning) voice.stop(time);
              voice.disconnect();
-        })
+            })
+        
+        this.voices = [];
         this.isRunning = false;
     }
 
-    restart(){
-        if(this.isRunning){
-            this.stop();
-            this.start();
-        }
+    dispose(){
+        this.voices.forEach( oscillator => {
+            oscillator.stop();
+            oscillator.disconnect();
+        })
+    }
+
+    restart(wasPlaying?:Boolean){
+        this.stop();
+        this.createDetunedVoices();
+        console.log(wasPlaying)
+        if(wasPlaying) this.start();
     }
 
     connect(destination:AudioNode){
@@ -65,17 +74,18 @@ export class DetunedVoiceBank {
     }
 
     setFrequency(newFrequency: number){
+        console.log("voices freq", newFrequency, this.isRunning)
         this.baseFrequency = newFrequency;
-        this.restart();
+        this.restart(this.isRunning)
     }
 
     setNumberOfVoices(number:number){
         this.voiceCount = number;
-        this.restart();
+        this.restart(this.isRunning)
     }
 
     setVoiceSpread(number:number){
         this.detuneSpread = number;
-        this.restart();
+        this.restart(this.isRunning)
     }
 }
