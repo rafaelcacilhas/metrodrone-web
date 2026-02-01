@@ -1,73 +1,87 @@
 <script lang="ts">
-    import {currentBeat, audioEngine, beats } from '../stores/audio';
-    import { BeatSounds } from '../audio/engines/MetronomeEngine';
+    import { derived } from 'svelte/store';
+    import {numberOfBeats, currentBeat, beatSounds } from '../stores/audio';
+   import { updateBeatSound, BeatSounds } from '../stores/audio';
 
-    const handleClick = (beat: number) =>{  
-    let newSound;
-    console.log('beat', beat, $beats[beat].sound)
-    switch($beats[beat].sound) {
-        case BeatSounds.Kick:
-            newSound = BeatSounds.Snare;
-            break;
-        case BeatSounds.Snare:
-            newSound = BeatSounds.HiHat;
-            break;
-        case BeatSounds.HiHat:
-            newSound = BeatSounds.None;
-            break;
-        case BeatSounds.None:
-            newSound = BeatSounds.Kick;
-            break;
-        default:
-            newSound = BeatSounds.None;
-            break;
-    }   
 
-    audioEngine.setBeatSound(beat,newSound)     
-    beats.set(audioEngine.getBeatSound())
-    console.log('engine, beats  ')
+
+    export let activeBeat = $currentBeat;
+    export const beatSymbols = derived(
+        [beatSounds, numberOfBeats],
+        ([$beatSounds,$numberOfBeats]) =>{
+            return Array.from({ length: $numberOfBeats }, (_, index) => {
+                const sound = $beatSounds[index];
+                switch(sound){
+                    case BeatSounds.None:return '✖'; 
+                    case BeatSounds.Kick:return '◼'; 
+                    case BeatSounds.Snare:return '●'; 
+                    case BeatSounds.HiHat:return '▲'; 
+                }
+            })
+        }
+    )
+
+    const handleClick = (beatIndex: number) =>{  
+        const currentSound = $beatSounds[beatIndex];
+        const nextSound = getNextBeatSound(currentSound);
+        console.log('click', beatIndex,currentSound,nextSound )
+        updateBeatSound(beatIndex,nextSound)
     }     
 
-    const getBeatIcon = (beat:number)=> {
-    switch ( $beats[beat].sound){
-        case BeatSounds.Kick:
-            return '◼ ';
-        case BeatSounds.HiHat:
-            return  '▲';
-        case BeatSounds.Snare:
-            return '●';
-        case BeatSounds.None: 
-            return '✖'; 
+    const getNextBeatSound = (currentSound:BeatSounds) => {
+        const sounds = [BeatSounds.None, BeatSounds.Kick, BeatSounds.Snare, BeatSounds.HiHat]
+        const currentIndex = sounds.indexOf(currentSound);
+        return sounds[(currentIndex+1)%sounds.length];
+        $beatSounds = $beatSounds;
     }
+
+    const getBeatIcon = (beat:number)=> {
+        switch (  $beatSounds[beat]){
+            case BeatSounds.Kick:
+                return '◼ ';
+            case BeatSounds.HiHat:
+                return  '▲';
+            case BeatSounds.Snare:
+                return '●';
+            case BeatSounds.None: 
+                return '✖'; 
+        }
     }
 
     const addBeat = () => {
-        const updatedBeats = $beats
+        const updatedBeats = beats
         updatedBeats.push({sound: BeatSounds.HiHat})
-        beats.set(updatedBeats)
+        beatSounds.set(updatedBeats)
     }
 
     const removeBeat = () => {
-        const updatedBeats = $beats
+        const updatedBeats = $beatSounds
         updatedBeats.pop()
-        beats.set(updatedBeats)
+        beatSounds.set(updatedBeats)
     }
 
+    const beats = [
+        null,
+        {sound:BeatSounds.Kick},
+        {sound:BeatSounds.Kick},
+        {sound:BeatSounds.Kick},
+        {sound:BeatSounds.Kick},
+    ]
 </script>
 
 <div class="beatContainer">
+    {$currentBeat   }
+
     <div class="beatGraphics">
-        {$currentBeat   }
-        {#each $beats as beat,  index}
-            { #if beat != undefined && index > 0 }
+        {#each  Array.from({ length: $numberOfBeats }) as beat,  index}
              <button 
                 class={index  == $currentBeat? 'activeBeat':'beat'} 
                 aria-label={'beat'}
                 onclick={()=>handleClick(index)}
             > 
-                {getBeatIcon(index)}
+            <p class="currentBeat">{index +1}</p>
+                {beatSymbols[index]}
             </button>
-            {/if}
         {/each}
     </div>
 
@@ -105,11 +119,11 @@
         color: var(--color-bg);
 
         display: flex;
+        flex-direction: column;
         justify-content: center;
-        align-items: flex-start;
+        align-items: center;
         font-size: smaller;
     }
-
     .activeBeat{
         border-width: 1;
         height: 3rem;
@@ -119,8 +133,12 @@
         font-size: smaller;
 
         display: flex;
+        flex-direction: column;
         justify-content: center;
-        align-items: flex-start;
+        align-items: center;
+    }
+    .currentBeat{
+        color:black;
     }
     .beatButtons{       
         display: flex;

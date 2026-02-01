@@ -2,7 +2,6 @@ import { StringEnsemble } from '../instruments/Strings';
 
 export type DroneInstrumentProps = {
     audioContext: AudioContext;
-    waveType: OscillatorType;
     frequency: number;
     volume:number;
 }
@@ -11,7 +10,6 @@ export default class DroneEngine {
     public audioContext: AudioContext;
 
     private instrument:StringEnsemble | null;
-    public waveType: OscillatorType; // TODO: Cleanup this, not used
     public frequency: number;
     public volume: number;
     public audioAnalyser: AnalyserNode;
@@ -20,7 +18,6 @@ export default class DroneEngine {
 
     constructor(config: DroneInstrumentProps){
         this.audioContext = config.audioContext;
-        this.waveType = config.waveType;
         this.frequency = config.frequency;
         this.volume = config.volume;
 

@@ -3,7 +3,6 @@
 	import Drone from './components/Drone.svelte';
 	import Metronome from './components/Metronome.svelte';
     // import NavigationMenu from './components/NavigationMenu.svelte';
-    // import SoundVisualizer from './components/SoundVisualizer.svelte';
 	
 </script>
 
@@ -11,7 +10,6 @@
   	<!-- <NavigationMenu /> -->
 	<Metronome />
 	<Drone />
-	<!-- <SoundVisualizer /> -->
 </main>
 
 <style>

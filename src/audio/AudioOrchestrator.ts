@@ -29,28 +29,14 @@ export default class AudioOrchestrator  {
             numberOfBeats:params.numberOfBeats,
             baseFrequency:params.baseFrequency,
             tempo:params.tempo,
-            volume:0.05, // FIX
+            volume:0.05, // TODO Add volume control
         });
 
-        const droneConfig = {
-            audioContext: this.audioContext,
-            frequency: params.baseFrequency, // FIX
-            volume: 0.05,
-            waveType: 'sawtooth' as OscillatorType
-        }
         this.drone = this.engine.droneEngine
-
-        const metronomeConfig = {
-            audioContext: this.audioContext,
-            numberOfBeats: params.numberOfBeats,
-            tempo: params.tempo,
-            baseFrequency: params.baseFrequency,
-            onBeatChange:(beat:number) => {},
-        }
         this.metronome =this.engine.metronomeEngine;
     }
 
-    async startDrone(config:any){
+    async startDrone(){
         if(this.isDronePlaying) return;
 
         await this.audioContext.resume();
@@ -58,7 +44,7 @@ export default class AudioOrchestrator  {
         this.isDronePlaying = true;
     }
 
-    async startMetronome(metronomeConfig: any){
+    async startMetronome(){
         if(this.isMetronomePlaying) return;
 
         await this.audioContext.resume();
@@ -95,7 +81,7 @@ export default class AudioOrchestrator  {
 
     }
 
-    updateDrone(params:any){
+    updateDrone(params:any){  // TODO: Route into BaseEngine
         const wasPlaying = this.isDronePlaying;
         if(wasPlaying){
             this.drone?.stop();

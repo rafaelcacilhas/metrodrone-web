@@ -1,5 +1,6 @@
 <script lang="ts">
-  import {selectedNote, droneFrequency, isDroneActive, octaveFactor, updateDroneFrequency} from '../stores/audio';
+  import {selectedNote, droneFrequency,  octaveFactor, updateDroneFrequency, isDroneActive} from '../stores/audio';
+  import SoundVisualizer from '../components/SoundVisualizer.svelte'
 
   const   AFrequency = 440.0;
   // TODO: Write all frequencies using A as a reference
@@ -27,8 +28,18 @@
 
   <section>
     <h1>Drone</h1>
-    <h2> {$selectedNote}</h2>
-    <p class="tag">{$droneFrequency/$octaveFactor} Hz </p>
+
+    <div class='header'>
+      <div class='note'>
+        <h2> {$selectedNote}</h2>
+        <p class="tag">{$droneFrequency/$octaveFactor} Hz </p>
+      </div>
+
+      <div>
+	      <SoundVisualizer />
+      </div>
+    </div>
+
 
     <div class="keyboard">
       <div class="accidentals">
@@ -82,13 +93,30 @@
     min-width: 35vw;
   }
 
+  .header{
+    display: flex;
+    justify-content: center;
+    align-items:flex-end;
+  }
+
+  .note{
+    max-height: 200px;  
+    padding-bottom:-1rem;
+    flex:1;
+
+    display:flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+    position:relative;
+    right:-2rem;
+  }
+
   .tag{
     font-size: 18;
     text-transform:'uppercase';
     letter-spacing: 3;
-    margin-top: -1rem;
-
-    margin-bottom: 2rem;
+      
   }
 
   .keyboard{

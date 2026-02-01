@@ -1,11 +1,6 @@
 import { Drums } from '../instruments/Drums';
 import { audioContextUtil } from '../../utils/audio-context';
-
-export enum BeatSounds {None, Kick, Snare, HiHat}
-
-type BeatConfig = {
-        sound: BeatSounds
-}
+import { BeatSounds } from '../../stores/audio';
 
 export type MetronomeSchedulerProps = { 
     audioContext: AudioContext;
@@ -24,8 +19,9 @@ export default class MetronomeEngine{
     public currentBeat: number = 0;
 
     private beatDuration: number;
+    private noteDuration: number;
+    
     private nextBeatTime: number;
-    private shouldPlay : boolean = false;
 
     private schedulerId: number | null = null;
 
@@ -34,8 +30,6 @@ export default class MetronomeEngine{
     public beats: BeatSounds[] = [];  
     
     private isPlaying: boolean = false;
-    private instanceId = Math.random().toString(36).substr(2, 9);
-
     
     constructor(config:MetronomeSchedulerProps){  
         // Core
@@ -49,8 +43,8 @@ export default class MetronomeEngine{
         // Timing
         this.beatDuration = 60.0/this.tempo;
         this.nextBeatTime = this.audioContext?.currentTime + this.beatDuration;
-        this.beatDuration = Math.min(0.3, this.beatDuration/3.0)
-        
+        this.noteDuration = Math.min(0.3, this.beatDuration / 3.0); 
+
         //Sound
         this.drums = new Drums(this.audioContext,config.baseFrequency, this.tempo)
         this.drums.connect(this.audioContext.destination);
@@ -62,7 +56,6 @@ export default class MetronomeEngine{
     }
 
     async play(){
-
         if(this.isPlaying) return;
 
         if (!this.drums) {
@@ -91,15 +84,12 @@ export default class MetronomeEngine{
     }
 
     dispose(){
-            console.log(`[${this.instanceId}] dispose() called`);
-
         if(this.isPlaying) this.stop();
         if(this.drums){
             this.drums.dispose();
         }
         this.drums = null;
         this.onBeatChange = undefined;
-        console.log("disposed", this.drums)
     }
 
     private scheduleNextBeats = ()=> {
@@ -118,7 +108,6 @@ export default class MetronomeEngine{
 
     startScheduler(){
         if(!this.isPlaying) return;
-        console.log("playing tempo", this.tempo)
         this.schedulerId = requestAnimationFrame(this.scheduleNextBeats);
     }
 
@@ -140,25 +129,30 @@ export default class MetronomeEngine{
         }
     }
 
-    updateParams(params:any){
+    updateParams(params:{
+        tempo?:number;
+        numberOfBeats?:number;
+        beatSounds?:BeatSounds[];
+    }){
         const wasPlaying = this.isPlaying;
         if(wasPlaying){
             this.stop();
         }
+        
         if (this.schedulerId !== null) {
             cancelAnimationFrame(this.schedulerId);
             this.schedulerId = null;
         }
         this.dispose();
         if(params.tempo){
-            console.log("update", params.tempo)
             this.tempo = params.tempo;
-            console.log("noww", this.tempo)
             this.beatDuration = 60.0/this.tempo;
         }
         if(params.numberOfBeats){
             this.numberOfBeats = params.numberOfBeats;
-            this.beats = Array(this.numberOfBeats + 1).fill(BeatSounds.Kick);
+        }
+        if(params.beatSounds){
+            this.beats = params.beatSounds;
         }
         if(wasPlaying){
             this.play();

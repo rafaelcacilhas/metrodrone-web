@@ -1,4 +1,5 @@
 
+import type { BeatSounds } from "src/stores/audio";
 import { audioContextUtil } from "../../utils/audio-context";
 import DroneEngine from "./DroneEngine";
 import MetronomeEngine from "./MetronomeEngine"; 
@@ -13,7 +14,6 @@ export type BaseEngineProps = {
 
 export default class BaseEngine {
     protected audioContext: AudioContext;
-    protected isPlaying:boolean = false;
     public droneEngine: DroneEngine | null = null;
     public metronomeEngine: MetronomeEngine | null = null;
 
@@ -21,7 +21,6 @@ export default class BaseEngine {
 
     private isDroneActive: boolean = false;
     private isMetronomeActive:boolean = false;
-private metronomeInstanceId?: string;
 
     constructor(config: BaseEngineProps){
         this.audioContext = audioContextUtil.getContext();
@@ -33,12 +32,10 @@ private metronomeInstanceId?: string;
             baseFrequency: config.baseFrequency,
             onBeatChange: (beat:number) => {
                 // Update store here instead
-                // You'll need to pass a callback from the store
             }
         }
 
         this.metronomeEngine = new MetronomeEngine(this.metronomeProperties);
-        this.metronomeInstanceId = (this.metronomeEngine as any).instanceId; // Capture ID
 
         const droneProperties = {
             audioContext: this.audioContext,
@@ -50,20 +47,7 @@ private metronomeInstanceId?: string;
         this.droneEngine = new DroneEngine(droneProperties);
     } 
 
-    start: () => void = () =>{
-
-    };
-
-    stop: () => void = () =>{
-
-    }
-
-    dispose(){
-
-    }
-
     async playDrone():Promise<void>{
-        console.log("Engine drone")
         if(this.isDroneActive) return;
 
         await audioContextUtil.ensureRunning();
@@ -72,7 +56,6 @@ private metronomeInstanceId?: string;
     }
 
     async playMetronome():Promise<void>{
-        console.log('BaseEngine playing metronome instance:', this.metronomeInstanceId);
         if(this.isMetronomeActive) return;
 
         await audioContextUtil.ensureRunning();
@@ -92,11 +75,20 @@ private metronomeInstanceId?: string;
         this.isMetronomeActive = false;
     }
 
-    updateDroneFrequency(newFrequency: number){
-        this.droneEngine?.setDroneFrequency(newFrequency)
-        if(this.isDroneActive){
-            this.stopDrone(); 
-            this.playDrone();
+    updateMetronome(params:{
+        tempo?:number;
+        numberOfBeats?:number;
+        beatSounds?:BeatSounds[];
+    }):void{
+        const wasPlaying = this.isMetronomeActive;
+        if(wasPlaying){
+            this.stopMetronome();
+        }
+
+        this.metronomeEngine?.updateParams(params);
+
+        if(wasPlaying){
+            this.playMetronome();
         }
     }
 

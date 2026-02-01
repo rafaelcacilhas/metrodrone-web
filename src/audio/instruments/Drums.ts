@@ -1,6 +1,6 @@
 import type { Instrument } from 'src/audio/instruments/Instrument';
 import { DrumSynth } from '../synth/DrumSynth'; 
-import { BeatSounds } from '../engines/MetronomeEngine';
+import {BeatSounds} from '../../stores/audio';
 
 export class Drums implements Instrument{
   private audioContext: AudioContext;
@@ -45,6 +45,7 @@ export class Drums implements Instrument{
 
   stop(time?:number){
     const stopTime = time || this.audioContext.currentTime;
+    this.drumSynth?.stop();
   }
 
   dispose(){

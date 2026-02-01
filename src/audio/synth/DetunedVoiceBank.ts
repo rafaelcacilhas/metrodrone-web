@@ -37,7 +37,6 @@ export class DetunedVoiceBank {
         this.voices.forEach((voice) => {
             voice.start(time);
             voice.connect(this.node)
-            console.log("f:",voice.frequency.value)
         })
     }
 
@@ -61,7 +60,6 @@ export class DetunedVoiceBank {
     restart(wasPlaying?:Boolean){
         this.stop();
         this.createDetunedVoices();
-        console.log(wasPlaying)
         if(wasPlaying) this.start();
     }
 
@@ -74,7 +72,6 @@ export class DetunedVoiceBank {
     }
 
     setFrequency(newFrequency: number){
-        console.log("voices freq", newFrequency, this.isRunning)
         this.baseFrequency = newFrequency;
         this.restart(this.isRunning)
     }

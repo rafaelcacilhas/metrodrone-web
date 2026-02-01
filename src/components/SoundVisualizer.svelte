@@ -1,7 +1,5 @@
 <script>
-import Knob from "./Knob.svelte";
 
-let value = 0;
 </script>
 
 <section class="container" >
@@ -10,17 +8,16 @@ let value = 0;
 </section>
 
 <style>
-    .container{
-        border: 1px solid #222;
-        position:absolute;
-        bottom: 5%;
-        left:40%;
-        width:200px;
-        max-height: 200px;
+    .container{ 
+        position:relative;
+        opacity:0.5;
     }
 
     #soundCanvas{
         max-width:200px;
         max-height: 200px;  
+        position:relative;
+        top: -2.5rem;
+        left:-1.5rem;
     }
 </style>

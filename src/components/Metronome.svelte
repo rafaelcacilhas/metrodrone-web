@@ -1,6 +1,6 @@
 
 <script lang="ts">
-  import { tempo,updateTempo, isMetronomeActive, audioEngine } from '../stores/audio';
+  import { tempo,updateTempo, isMetronomeActive, numberOfBeats } from '../stores/audio';
   import BeatsVisualization from './BeatsVisualization.svelte';
   import { Slider } from "$lib/components/ui/slider/index.js";
   
