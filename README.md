@@ -1,7 +1,12 @@
 # Metrodrone
 
-This is a web app made of a metronome and a drone player. It consists of a typescript engine that will synthesize sounds and a Svelte frontend to control it. We also use [shadcn-svelte](https://www.shadcn-svelte.com) for some UI components.
+This is a web app made of a metronome and a drone player. It consists of a typescript engine that will synthesize sounds and a Svelte frontend to control it. We also use [shadcn-svelte](https://www.shadcn-svelte.com) for some UI components. You can run it with
 
+
+```bash
+yarn
+yarn dev
+```
 
 ## State Management
 
@@ -43,7 +48,8 @@ src/
 
 ```
 
-TODO for version 2.0::
+TODO for version 2.0:
+0.  Remove AudioOrchestrator - BaseEngine can do the same.
 1.  Expand sound library (5-8 basic percussion)
 2.  Global filter controls
 3.  Pattern presets/save/load
