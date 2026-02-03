@@ -7,9 +7,6 @@ export enum BeatSounds {None, Kick, Snare, HiHat}
 // ========== TEMP ==================
 export const octaveFactor = writable(1);
 export const selectedNote = writable('A');
-export const  audioEngine  = writable('A');
-export const beats = writable([{sound:BeatSounds.Kick}]);
-
 
 // ========== STATE STORES ==========
 export const droneFrequency = writable(220.0);
@@ -33,6 +30,9 @@ function getAudioManager():AudioOrchestrator{
 			numberOfBeats:get(numberOfBeats),
 			baseFrequency:get(droneFrequency),
 			tempo:get(tempo),
+			onBeatChange:(beat:number) => {
+				currentBeat.set(beat);
+			}
 		});
 	}
 	return audioManager;
@@ -78,25 +78,23 @@ export function updateTempo(newTempo:number):void{
 }	
 
 export function updateNumberOfBeats(newNumberOfBeats:number):void{
-	numberOfBeats.set(newNumberOfBeats);
-	beatSounds.update(currentSounds => {
+	beatSounds.update(currentSounds => {		
 		const newSounds = [...currentSounds];
-
+		console.log('update store', newNumberOfBeats, newSounds)
 		if(newNumberOfBeats > currentSounds.length){
-			for(let i = currentSounds.length; i < newNumberOfBeats; i++){
-				newSounds[i] = BeatSounds.Kick;
-			}
+			newSounds.push(BeatSounds.Kick);
 		} else{
 			newSounds.length = newNumberOfBeats;
 		}
 		return newSounds;
 	})
-	if(get(isMetronomeActive)){
-		getAudioManager().updateMetronome({
-			numberOfBeats:get(numberOfBeats),
-			beatSounds:get(beatSounds)
-		})
-	}
+
+	numberOfBeats.set(newNumberOfBeats);
+
+	getAudioManager().updateMetronome({
+		numberOfBeats: newNumberOfBeats,
+		beatSounds:get(beatSounds)
+	})
 }
 
 export function updateBeatSound(beatIndex:number, sound:BeatSounds):void{
@@ -106,28 +104,13 @@ export function updateBeatSound(beatIndex:number, sound:BeatSounds):void{
 		return newSounds
 	});
 
-	if(get(isMetronomeActive)){
-		getAudioManager().updateMetronome({beatSounds:get(beatSounds)})
-	}
+	getAudioManager().updateMetronome({
+		beatSounds:get(beatSounds)}
+	)
+
 }
 
 export function getBeatSound(beatIndex:number):BeatSounds{
 	const sounds = get(beatSounds);
 	return sounds[beatIndex] || BeatSounds.Kick
 }
-
-
-//============ DERIVED STORES ==============
-// export const audioContextState = derived(
-// 	[AudioContextManager, getState],
-// 	([$state]) => $state
-// )
-
-// export const isAudioActive = derived(
-//     [isDroneActive, isMetronomeActive],
-//     ([$drone, $metronome]) => $drone || $metronome
-// );
-
-// ========== INITIALIZATION ====	======
-// Initialize beat sounds array
-

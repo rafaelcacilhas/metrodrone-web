@@ -8,6 +8,7 @@ export type AudioOrchestratorProps = {
     numberOfBeats: number;
     tempo: number;
     baseFrequency: number;
+    onBeatChange: (beat:number)=>void;
 }
 
 export default class AudioOrchestrator  {
@@ -29,6 +30,7 @@ export default class AudioOrchestrator  {
             numberOfBeats:params.numberOfBeats,
             baseFrequency:params.baseFrequency,
             tempo:params.tempo,
+            onBeatChange:params.onBeatChange,
             volume:0.05, // TODO Add volume control
         });
 

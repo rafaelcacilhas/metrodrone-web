@@ -10,6 +10,7 @@ export type BaseEngineProps = {
     baseFrequency:number;
     tempo:number;
     volume:number;
+    onBeatChange:(beat:number)=>void;
 }
 
 export default class BaseEngine {
@@ -30,9 +31,7 @@ export default class BaseEngine {
             numberOfBeats: config.numberOfBeats,
             tempo: config.tempo,
             baseFrequency: config.baseFrequency,
-            onBeatChange: (beat:number) => {
-                // Update store here instead
-            }
+            onBeatChange: config.onBeatChange,
         }
 
         this.metronomeEngine = new MetronomeEngine(this.metronomeProperties);

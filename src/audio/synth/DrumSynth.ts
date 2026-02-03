@@ -116,13 +116,11 @@ export class DrumSynth {
 
     start(time?:number){
         if(this.isRunning) return;
-
         this.isRunning = true;
     }
 
     stop(time?:number) {
         if(!this.isRunning) return;
-
         this.isRunning = false;
     }
 
