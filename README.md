@@ -2,17 +2,13 @@
 
 This is a web app made of a metronome and a drone player. It consists of a typescript engine that will synthesize sounds and a Svelte frontend to control it. We also use [shadcn-svelte](https://www.shadcn-svelte.com) for some UI components.
 
-## Core Philosophy
-
-Audio-first reactive application. The audio engine is the source of truth; the UI is a control surface that mirrors its state.
 
 ## State Management
 
 Three-layer model:
-
-1. **Audio Engine** (Typescript) – Imperative, real-time
+1. **UI Components** (Svelte) – Declarative controls
 2. **Store Bridge** (Svelte stores) – Reactive translation layer  
-3. **UI Components** (Svelte) – Declarative controls
+3. **Audio Engine** (Typescript) – Imperative, real-time
 
 ## Architecture
 
@@ -44,32 +40,16 @@ src/
 │   └── audio-context.ts     # Singleton audioContextInstance
 ├── App.svelte
 └── main.ts
+
 ```
 
-## Interface Contracts
+TODO for version 2.0::
+1.  Expand sound library (5-8 basic percussion)
+2.  Global filter controls
+3.  Pattern presets/save/load
+4.  More precise timing options (swing, triplets)
+5.  Adding tests, I suppose? 
 
-### Audio Engine Public API
+<img width="2810" height="1016" alt="architecture" src="https://github.com/user-attachments/assets/d3254872-b1e9-4d4d-8698-4e0ced9c5dae" />
 
-```typescript
-interface BaseEngine {
 
-  type BaseEngineProps = {
-      audioContext: AudioContext;
-      numberOfBeats:number;
-      baseFrequency:number;
-      tempo:number;
-      volume:number;
-  }
-
-  // Drone control
-  playDrone(): void
-  stopDrone(): void
-  updateDroneFrequency(hz: number): void
-
-  // Metronome control
-  playMetronome(): void
-  stopMetronome(): void
-  setTempo(bpm: number): void
-  setBeatNumber(beats: number): void
-  setMetronomeVolume(gain: number): void
-}
