@@ -30,14 +30,15 @@
     <h1>Drone</h1>
 
     <div class='header'>
+      <div class="soundvisualizer">
+	      <SoundVisualizer />
+      </div>
+
       <div class='note'>
         <h2> {$selectedNote}</h2>
         <p class="tag">{$droneFrequency/$octaveFactor} Hz </p>
       </div>
 
-      <div>
-	      <SoundVisualizer />
-      </div>
     </div>
 
 
@@ -89,34 +90,38 @@
 
 <style>
   section{
-    width: 45%;
+    flex:1;
     min-width: 35vw;
   }
 
   .header{
+    padding-left:3rem;
+    padding-right: 3rem;
     display: flex;
     justify-content: center;
-    align-items:flex-end;
+    align-items:center;
+  }
+
+  .soundvisualizer{
+    width:100%;
+    height:100%;
+    padding-left: 1rem;
   }
 
   .note{
     max-height: 200px;  
     padding-bottom:-1rem;
-    flex:1;
+    min-width:5rem;
 
     display:flex;
     flex-direction: column;
-    justify-content: space-around;
-
-    position:relative;
-    right:-2rem;
+    justify-content: space-around;  
   }
 
   .tag{
     font-size: 18;
     text-transform:'uppercase';
     letter-spacing: 3;
-      
   }
 
   .keyboard{
@@ -138,7 +143,6 @@
     width: 1rem;
     background-color: var(--color-bg);
     pointer-events: none;
-
   }
 
   .naturals{
@@ -158,6 +162,45 @@
     justify-content: center;
     align-items: center;
     gap: 2rem;
+  }
+
+    @media (max-width: 768px) {
+    h1{
+      font-size:3rem;
+    }
+    h2{
+      font-size:4rem;
+    }
+
+    .header{
+      padding-left:0rem;
+      padding-right: 3rem;
+    }
+
+    section{
+      width:50%;
+    }
+
+    .keyboard{
+      margin: 1.5rem 1rem 1.5rem -1.5rem  ;
+      gap: 0.1rem;
+    }
+
+    .key{
+      width: 1rem;
+    }
+
+    .buttonSection{
+      gap: 0.5rem;
+    }
+
+    .naturals{
+      gap: 0.25rem;
+    }
+
+    .accidentals{
+      gap: 0.25rem;
+    }
   }
 
 </style>

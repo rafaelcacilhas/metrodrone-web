@@ -11,13 +11,15 @@
     .container{ 
         position:relative;
         opacity:0.5;
+        display:flex;
+        align-items: center;
+        justify-content: center;    
     }
 
-    #soundCanvas{
+    #soundCanvas{   
         max-width:200px;
         max-height: 200px;  
         position:relative;
-        top: -2.5rem;
-        left:-1.5rem;
+        top: -1.5rem;
     }
 </style>

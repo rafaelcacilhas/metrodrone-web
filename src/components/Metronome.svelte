@@ -49,4 +49,29 @@
 
     margin-bottom: 2rem;
   }
+
+  @media (max-width: 768px) {
+    h1{
+      font-size:3rem;
+    }
+    h2{
+      font-size:4rem;
+    }
+    section{  
+      width: 49%;
+      min-width: 35vw;
+      display: flex;  
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .tag{
+      font-size: 16;
+      text-transform:'uppercase';
+      letter-spacing: 2;
+      margin-top: -1rem;
+
+      margin-bottom: 1rem;
+    }
+  }
 </style>

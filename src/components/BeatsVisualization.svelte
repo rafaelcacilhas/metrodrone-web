@@ -129,4 +129,23 @@
         justify-content: center;
         align-items: center;
     }
+
+      @media (max-width: 768px) {
+        .beatContainer{
+            width: 100%;
+            margin: 1rem 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+    .beatGraphics {
+        gap: 0.5rem;
+    }
+    .beatButtons{       
+            gap: 0.2rem;
+        }
+      }
 </style>
