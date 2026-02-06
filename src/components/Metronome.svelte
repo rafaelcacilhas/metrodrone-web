@@ -53,16 +53,17 @@
 
   @media (max-width: 768px) {
     h1{
-      font-size:3rem;
+      font-size:2rem;
     }
     h2{
-      font-size:4rem;
+      font-size:3rem;
     }
     section{  
-      width: 49%;
+      width: 50%;
       min-width: 35vw;
       display: flex;  
       flex-direction: column;
+      justify-content: flex-start;
       align-items: center;
     }
 
@@ -75,6 +76,7 @@
       margin-bottom: 1rem;
     }
   }
+  
   @container (max-width: 768px) {
     h1{
       font-size:2rem;

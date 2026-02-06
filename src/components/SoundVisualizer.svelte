@@ -21,7 +21,11 @@
         position:relative;
         top: -1.5rem;
     }
-    
+    @media (max-width: 768px) {
+        #soundCanvas{
+            left:2rem;
+        }
+    }
     @container (max-width: 768px) {
         #soundCanvas{
             left:2rem;

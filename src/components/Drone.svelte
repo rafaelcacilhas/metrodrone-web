@@ -168,46 +168,7 @@
     gap: 2rem;
   }
 
-  @media (max-width: 768px) {
-    h1{
-      font-size:3rem;
-    }
-    h2{
-      font-size:4rem;
-    }
-
-    .header{
-      padding-left:0rem;
-      padding-right: 3rem;
-    }
-
-    section{
-      width:50%;
-    }
-
-    .keyboard{
-      margin: 1.5rem 1rem 1.5rem -1.5rem  ;
-      gap: 0.1rem;
-    }
-
-    .key{
-      width: 1rem;
-    }
-
-    .buttonSection{
-      gap: 0.5rem;
-    }
-
-    .naturals{
-      gap: 0.25rem;
-    }
-
-    .accidentals{
-      gap: 0.25rem;
-    }
-  }
-
-  @container (max-width: 768px) {
+  @media (max-width: 768px)  {
     h1{
       font-size:2rem;
     }
@@ -216,16 +177,35 @@
     }
 
     .header{
-      padding: 0;
-      margin: 0;  
+      padding:1rem 0;
     }
 
     section{
       width:50%;
     }
 
+    .header{
+      padding:0;
+      justify-content: space-around;
+    }
+
+    .soundvisualizer{
+      padding:0;
+      max-width:50%;
+      padding:0;
+    }
+
+    .note{
+      max-height: 200px;  
+      padding-bottom:-1rem;
+      min-width:5rem;
+
+      display:flex;
+      flex-direction: column;
+      justify-content: space-around;  
+    }
     .keyboard{
-      margin: 1.5rem 1rem 1.5rem -1.5rem  ;
+      margin:1rem 0 ;  
       gap: 0.1rem;
     }
 
@@ -245,8 +225,8 @@
       gap: 0.25rem;
     }
   }
-
-  @container (max-width: 768px) {
+  
+  @container (max-width: 768px)  {
     h1{
       font-size:2rem;
     }
