@@ -9,7 +9,6 @@
 
 <style>
     .container{ 
-        position:relative;
         opacity:0.5;
         display:flex;
         align-items: center;
@@ -21,5 +20,11 @@
         max-height: 200px;  
         position:relative;
         top: -1.5rem;
+    }
+    
+    @container (max-width: 768px) {
+        #soundCanvas{
+            left:2rem;
+        }
     }
 </style>

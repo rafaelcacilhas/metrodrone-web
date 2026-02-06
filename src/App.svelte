@@ -12,7 +12,6 @@
 <style>
 	main {
 		width: 100vw;
-		max-width: 700px;
 		display: flex;
 		justify-content: center;
 		align-items: flex-start;
