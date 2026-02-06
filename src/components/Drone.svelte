@@ -164,7 +164,7 @@
     gap: 2rem;
   }
 
-    @media (max-width: 768px) {
+  @media (max-width: 768px) {
     h1{
       font-size:3rem;
     }
@@ -203,4 +203,42 @@
     }
   }
 
+  @container (max-width: 768px) {
+    h1{
+      font-size:3rem;
+    }
+    h2{
+      font-size:4rem;
+    }
+
+    .header{
+      padding-left:0rem;
+      padding-right: 3rem;
+    }
+
+    section{
+      width:50%;
+    }
+
+    .keyboard{
+      margin: 1.5rem 1rem 1.5rem -1.5rem  ;
+      gap: 0.1rem;
+    }
+
+    .key{
+      width: 1rem;
+    }
+
+    .buttonSection{
+      gap: 0.5rem;
+    }
+
+    .naturals{
+      gap: 0.25rem;
+    }
+
+    .accidentals{
+      gap: 0.25rem;
+    }
+  }
 </style>

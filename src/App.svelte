@@ -19,11 +19,19 @@
 		gap: 0;
 	}
 
-	    @media (max-width: 640px) {
-			main {
-				flex-direction: column;
-				align-items:center;
-				gap: 3rem;
-			}
-		}	
+	@media (max-width: 640px) {
+		main {
+			flex-direction: column;
+			align-items:center;
+			gap: 3rem;
+		}
+	}	
+
+	@container (max-width: 640px) {
+		main {
+			flex-direction: column;	
+			align-items:center;
+			gap: 3rem;
+		}
+	}	
 </style>
