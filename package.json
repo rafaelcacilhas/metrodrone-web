@@ -1,8 +1,20 @@
 {
   "name": "metrodrone",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "exports": {
+    ".": {
+      "import": "./src/lib/index.js",  
+      "types": "./src/lib/index.d.ts"  
+    },
+    "./components/*": "./src/components/*.svelte",
+    "./stores/*": "./src/stores/*.ts",
+    "./audio/*": "./src/audio/*.ts"
+  },
+  
+  "svelte": "./src/lib/index.js",
+  "main": "./src/main.ts",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
