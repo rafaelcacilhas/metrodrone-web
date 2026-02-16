@@ -115,6 +115,7 @@
     }
     .currentBeat{
         color:black;
+        margin: -0.1rem 0;
     }
     .beatButtons{       
         display: flex;
