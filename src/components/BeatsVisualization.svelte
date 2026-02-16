@@ -48,8 +48,6 @@
 </script>
 
 <div class="beatContainer">
-    {$currentBeat+1}
-
     <div class="beatGraphics">
         {#each  Array.from({ length: $numberOfBeats }) as _,  index}
              <button 
