@@ -92,6 +92,7 @@
   section{
     flex:1;
     min-width: 35vw;
+    padding-right: 1rem;
     display:flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -99,8 +100,8 @@
   }
 
   .header{
-    padding-left:3rem;
-    padding-right: 3rem;
+    padding-left:4rem;
+    padding-right: 4rem;
     display: flex;
     justify-content: center;
     align-items:center;
@@ -176,33 +177,35 @@
       font-size:3rem;
     }
 
-    .header{
-      padding:1rem 0;
-    }
-
     section{
       width:50%;
     }
 
     .header{
-      padding:0;
+      padding:0 1rem;
       justify-content: space-around;
     }
 
     .soundvisualizer{
       padding:0;
-      max-width:50%;
-      padding:0;
+      padding-left:1rem;
+      max-width:40%;
     }
 
     .note{
       max-height: 200px;  
       padding-bottom:-1rem;
+      padding-right: 1rem;
       min-width:5rem;
 
       display:flex;
       flex-direction: column;
       justify-content: space-around;  
+    }
+    .tag{
+      font-size: 16;
+      text-transform:'uppercase';
+      letter-spacing: 1;
     }
     .keyboard{
       margin:1rem 0 ;  
@@ -262,6 +265,13 @@
       flex-direction: column;
       justify-content: space-around;  
     }
+
+    .tag{
+      font-size: 16;
+      text-transform:'uppercase';
+      letter-spacing: 1;
+    }
+
     .keyboard{
       margin:1rem 0 ;  
       gap: 0.1rem;
