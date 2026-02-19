@@ -31,7 +31,7 @@ export class DrumSynth {
     // Oscillator -> Envelope -> Node
     playKick(time: number, duration: number = 1):void{
         const oscilator = this.audioContext.createOscillator();
-        oscilator.frequency.setValueAtTime(this.baseFrequency, time);
+        oscilator.frequency.setValueAtTime(2*this.baseFrequency, time);
         oscilator.frequency.exponentialRampToValueAtTime(0.001, time+duration);
 
         let envelopeParams:EnvelopeParameters = {
