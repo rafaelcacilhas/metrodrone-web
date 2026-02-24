@@ -51,12 +51,13 @@ src/
 TODO for version 2.0:
 0.  Remove AudioOrchestrator - BaseEngine can do its work.
 1.  Expand sound library (5-8 basic percussion)
-2.  Volume control
-3.  Allow changing A = 440 hz to different values
-4.  Global filter controls
-5.  Pattern presets/save/load
-6.  More precise timing options (swing, triplets)
-7.  Adding tests, I suppose? 
+2.  Allow changing the octaves
+3.  Individual volume controls
+4.  Allow changing A = 440 hz to different values
+5.  Global filter controls
+6.  Pattern presets/save/load
+7.  More precise timing options (swing, triplets)
+8.  Adding tests, I suppose? 
 
 <img width="2810" height="1016" alt="architecture" src="https://github.com/user-attachments/assets/d3254872-b1e9-4d4d-8698-4e0ced9c5dae" />
 
